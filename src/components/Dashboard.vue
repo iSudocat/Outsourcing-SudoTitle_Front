@@ -259,12 +259,8 @@
           <mdb-card>
             <mdb-card-header>Google Map</mdb-card-header>
             <mdb-card-body>
-              <GmapMap
-                :center="{lat:10, lng:10}"
-                :zoom="7"
-                style="width: 100%; height: 300px"
-              >
-              </GmapMap>
+
+
             </mdb-card-body>
           </mdb-card>
         </mdb-col>
