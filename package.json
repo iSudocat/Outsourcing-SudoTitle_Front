@@ -26,7 +26,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^6.1.2",
     "vue-cli-plugin-mdb": "^2.0.4",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.12"
   },
   "eslintConfig": {
     "root": true,

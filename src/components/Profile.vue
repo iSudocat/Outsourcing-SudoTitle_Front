@@ -140,6 +140,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import { mdbRow, mdbCol, mdbCard, mdbCardBody, mdbView, mdbMask, mdbCardTitle, mdbCardText, mdbCardFooter, mdbIcon, mdbBtn, mdbPagination, mdbPageNav, mdbPageItem } from 'mdbvue'
 
 export default {

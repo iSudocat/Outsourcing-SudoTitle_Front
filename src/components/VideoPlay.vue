@@ -16,7 +16,7 @@
             </h4>
           </mdb-view>
           <mdb-card-body class="text-center">
-            <mdb-scrollbar height="70vh">
+            <mdb-scrollbar height="70vh" id="sc">
               <b-table hover :responsive="true" :fields="tlTableFields" :items="tlTableItems"></b-table>
             </mdb-scrollbar>
 
@@ -109,31 +109,52 @@ export default {
     },
     onTimeUpdateListener: function (){
 
-      this.gklog = this.player.cache_.currentTime
-      console.log('onPlayerTimeupdate!', this.gklog)
-      this.playerHeight = this.$refs.videoPlayer.clientHeight
-      console.log(this.playerHeight)
+      let curTime = this.player.cache_.currentTime
+      console.log('onPlayerTimeupdate!', curTime)
 
+      //this.playerHeight = this.$refs.videoPlayer.clientHeight
+      //console.log(this.playerHeight)
+      let curTimeMs =  Math.round(curTime * 1000)
+      //console.log(this.tlTableItems)
+      for(let i = this.tlTableItems.length - 1; i > 0 ; i--){
+        if(curTimeMs > this.tlTableItems[i].begin){
+          console.log(this.tlTableItems[i].text)
+          let sc = document.querySelector('#sc')
+
+          sc.scroll(0,55 + i * 55)
+          break;
+        }
+      }
     },
     getTimeLine: function () {
       console.log('getTimeLine')
+      /*
       this.tlTableFields.push({
         key: 'id',
         label: 'ID'
       })
+
+       */
+
       this.tlTableFields.push({
-        key: 'beginningTime',
+        key: 'begin',
         label: '时间',
       })
       this.tlTableFields.push({
         key: 'text',
         label: '字幕文本'
       })
-      this.tlTableItems.push({
-        id: 1,
-        beginningTime: 1.2,
-        text: '练练练练练'
-      })
+      let fieldData = null
+      this.axios.get('https://sudotitle-1251910132.cos.ap-chengdu.myqcloud.com/sudocat/subtitle_query.json')
+          .then((response) => {
+            fieldData = response.data.data
+            console.log(fieldData)
+            this.tlTableItems = fieldData
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+
     }
   },
   beforeDestroy() {
