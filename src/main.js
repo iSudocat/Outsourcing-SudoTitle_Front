@@ -1,7 +1,11 @@
+/* eslint-disable */
 import Vue from 'vue'
 import App from './App'
 import router from './router'
 import store from './store'
+
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 
 import { BootstrapVue } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -19,6 +23,11 @@ Vue.prototype.$video = Video
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
+
+import $ from 'jquery'
+import 'bootstrap-table/dist/bootstrap-table.min.css'
+import 'bootstrap-table/dist/bootstrap-table.min.js'
+import 'bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js'
 
 Vue.config.productionTip = false
 

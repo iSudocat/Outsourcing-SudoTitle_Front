@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Dashboard from '@/components/Dashboard'
-import Profile from '@/components/Profile'
+import Audit from '@/components/Audit'
 import VideoList from '@/components/VideoList'
 import videoPlay from '@/components/VideoPlay'
 import BadGateway from '@/components/BadGateway'
@@ -13,17 +12,17 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/dashboard',
-      name: '审计',
-      component: Dashboard,
+      path: '/login',
+      name: 'Login',
       props: { page: 1 },
-      alias: '/'
+      component: Login
     },
     {
-      path: '/profile',
-      name: 'Profile',
+      path: '/audit',
+      name: 'Audit',
+      component: Audit,
       props: { page: 2 },
-      component: Profile
+      alias: '/'
     },
     {
       path: '/videoList',
@@ -33,7 +32,7 @@ export default new Router({
     },
     {
       path: '/videoPlay',
-      name: '视频预览',
+      name: 'VideoPlay',
       props: { page: 4 },
       component: videoPlay
     },
@@ -48,11 +47,6 @@ export default new Router({
       props: { page: 5 },
       redirect: '/404'
     },
-    {
-      path: '/login',
-      name: 'Login',
-      props: { page: 6 },
-      component: Login
-    }
+
   ]
 })

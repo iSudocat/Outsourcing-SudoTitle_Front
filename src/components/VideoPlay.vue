@@ -3,9 +3,10 @@
     <mdb-row>
       <mdb-col md="8" class="mt-3">
         <div>
-          <video ref="videoPlayer" class="video-js" :options="videoOptions" @timeupdate="onTimeUpdateListener" ></video>
+          <video ref="videoPlayer" class="video-js" :options="videoOptions" @timeupdate="onTimeUpdateListener">
+            <source id="my-spanish-audio-track" :src="this.videoOptions.sources[0].audioSource" type="audio/wav">
+          </video>
         </div>
-        <mdb-btn color="default" @click='declick'>Default</mdb-btn>
       </mdb-col>
 
       <mdb-col md="4">
@@ -32,8 +33,7 @@ import { mdbRow, mdbCol, mdbCard, mdbView, mdbCardBody, mdbBtn, mdbTbl, mdbTblHe
 import videojs from 'video.js';
 export default {
   /* eslint-disable */
-
-  name: 'Maps',
+  name: 'VideoPlay',
   components: {
     mdbRow,
     mdbCol,
@@ -62,11 +62,15 @@ export default {
             inline: false,
           }
         },
+        audioTracks: {
+          tracks:[]
+        },
         sources: [
           {
-            src: 'https://sudotitle-1251910132.cos.ap-chengdu.myqcloud.com/%E9%9B%86%E5%90%88%E6%A6%82%E8%BF%B0.mp4',
+            src: '',
             type: '',
-            poster: ''
+            poster: '',
+            audioSource:''
           }
         ]
       },
@@ -76,6 +80,17 @@ export default {
       tlTableItems: [],
     }
   },
+  beforeMount() {
+    if(this.$cookies.get('username') === null) {
+      this.$router.push('/login')
+    }
+    console.log(this.$route.query.videoStream)
+    this.videoOptions.sources[0].src = this.$route.query.videoStream
+    this.videoOptions.sources[0].audioSource = this.$route.query.audioStream
+    this.getTimeLine()
+
+
+  },
   mounted() {
     let t = this
     this.player = videojs(this.$refs.videoPlayer, this.videoOptions, function onPlayerReady() {
@@ -84,29 +99,27 @@ export default {
       console.log(t.playerHeight)
     })
 
+    let track = new videojs.AudioTrack({
+      id: 'my-spanish-audio-track',
+      kind: 'main',
+      label: 'Spanish',
+      language: 'zh-Hans-CN',
+      enabled: true
+    });
+
+    this.player.audioTracks().addTrack(track)
+
   },
   ready() {
 
   },
+  beforeDestroy() {
+    if (this.player) {
+      this.player.dispose()
+    }
+  },
   methods: {
 
-    declick: function (){
-      /*
-      this.player.currentTime(16)
-      this.player.play()
-
-      this.gklog = this.player.cache_.currentTime
-      console.log('onPlayerTimeupdate!', this.gklog)
-
-
-      let sc = document.querySelector('#sc')
-      this.scy+=55
-      console.log(this.scy)
-      sc.scroll(0,this.scy)
-       */
-      this.getTimeLine()
-
-    },
     onTimeUpdateListener: function (){
 
       let curTime = this.player.cache_.currentTime
@@ -117,7 +130,7 @@ export default {
       let curTimeMs =  Math.round(curTime * 1000)
       //console.log(this.tlTableItems)
       for(let i = this.tlTableItems.length - 1; i > 0 ; i--){
-        if(curTimeMs > this.tlTableItems[i].begin){
+        if(curTimeMs > this.tlTableItems[i].msBegin){
           console.log(this.tlTableItems[i].text)
           let sc = document.querySelector('#sc')
 
@@ -127,6 +140,7 @@ export default {
       }
     },
     getTimeLine: function () {
+      const _this = this
       console.log('getTimeLine')
       /*
       this.tlTableFields.push({
@@ -145,23 +159,45 @@ export default {
         label: '字幕文本'
       })
       let fieldData = null
-      this.axios.get('https://sudotitle-1251910132.cos.ap-chengdu.myqcloud.com/sudocat/subtitle_query.json')
+
+      this.axios.get('/api/subtitle/query?video_id=' + this.$route.query.id, {headers: {Authorization: "Bearer " + this.$cookies.get('access_token')}})
           .then((response) => {
-            fieldData = response.data.data
-            console.log(fieldData)
-            this.tlTableItems = fieldData
+            console.log(response.data)
+            fieldData = response.data.data.subs
+            let temp = []
+            fieldData.forEach((element,index) => {
+              temp.push({
+                msBegin:element.begin,
+                begin:_this.formatTime(element.begin),
+                text:element.text
+              })
+            })
+            console.log(temp)
+            this.tlTableItems = temp
           })
           .catch((error) => {
             console.log(error)
           });
 
+    },
+    formatTime: function (msTime) {
+      let time = msTime / 1000;
+
+      let hour = Math.floor(time / 60 / 60);
+
+      hour = hour.toString().padStart(2, "0");
+
+      let minute = Math.floor(time / 60) % 60;
+
+      minute = minute.toString().padStart(2, "0");
+
+      let second = Math.floor(time) % 60;
+
+      second = second.toString().padStart(2, "0");
+
+      return `${hour}:${minute}:${second}`;
     }
   },
-  beforeDestroy() {
-    if (this.player) {
-      this.player.dispose()
-    }
-  }
 }
 </script>
 

@@ -711,7 +711,12 @@ export default {
         maintainAspectRatio: false
       }
     }
-  }
+  },
+  beforeMount() {
+    if(this.$cookies.get('username') === null) {
+      this.$router.push('/login')
+    }
+  },
 }
 </script>
 
