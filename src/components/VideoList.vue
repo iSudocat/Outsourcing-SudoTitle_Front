@@ -9,8 +9,7 @@
           <mdb-card-body>
             <!--<h3 class="mt-5 text-left"><strong>视频列表</strong></h3>-->
             <p>点击视频，进入视频与字幕的预览界面。</p>
-            <table id="table" data-pagination="true" data-page-list="[10, 25, 50, 100, all]" data-show-footer="false"
-                   data-page-size="10">
+            <table id="table" data-pagination="false"  data-show-footer="false">
             </table>
 
             <!--
@@ -235,7 +234,6 @@ export default {
       'click .dl': function (e, value, row, index) {
         console.log(row)
         _this.$router.push({ name: 'VideoPlay', query: row})
-
       }
     }
 
@@ -248,9 +246,7 @@ export default {
     }
   },
   methods:{
-    jumpToVideo:function (item, index, button){
-      console.log(index)
-    }
+
   }
 
 }

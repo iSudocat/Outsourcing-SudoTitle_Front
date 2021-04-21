@@ -69,16 +69,7 @@
             </mdb-list-group-item
             >
           </router-link>
-          <router-link to="/videoPlay" @click.native="activeItem = 4">
-            <mdb-list-group-item
-                :action="true"
-                :class="activeItem === 4 && 'active'"
-            >
-              <mdb-icon icon="video" class="mr-3"/>
-              视频预览
-            </mdb-list-group-item
-            >
-          </router-link>
+
         </mdb-list-group>
       </div>
       <!-- /Sidebar  -->
