@@ -24,10 +24,16 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
-import $ from 'jquery'
+import jQuery from 'jquery'
+window.jQuery = jQuery
+
+require('./assets/tableExport.min.js');
+require('./assets/bootstrap-table-export.min.js');
+
 import 'bootstrap-table/dist/bootstrap-table.min.css'
 import 'bootstrap-table/dist/bootstrap-table.min.js'
 import 'bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js'
+
 
 Vue.config.productionTip = false
 

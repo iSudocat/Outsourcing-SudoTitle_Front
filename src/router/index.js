@@ -22,7 +22,6 @@ export default new Router({
       name: 'Audit',
       component: Audit,
       props: { page: 2 },
-      alias: '/'
     },
     {
       path: '/videoList',

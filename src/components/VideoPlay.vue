@@ -17,17 +17,25 @@
             </h4>
           </mdb-view>
           <mdb-card-body class="text-center">
-            <mdb-scrollbar height="70vh" id="sc">
-              <b-table id="table" hover :responsive="true" :fields="tlTableFields" :items="tlTableItems"
-                       style="text-align:left ">
-                <template v-slot:cell(operation)="row">
-                  <b-button variant="info" size="sm" @click="modifyAudio(row.item, row.index, $event.target)"
-                            style="width: 5rem">
-                    修改
-                  </b-button>
-                </template>
-              </b-table>
-            </mdb-scrollbar>
+            <div v-show="subTitleOK">
+              <mdb-scrollbar height="70vh" id="sc">
+                <b-table class="rowSameHeight" id="table" hover :responsive="true" :fields="tlTableFields" :items="tlTableItems"
+                         style="text-align:left ">
+                  <template v-slot:cell(operation)="row">
+                    <b-button variant="info" size="sm" @click="modifyAudio(row.item, row.index, $event.target)"
+                              style="width: 5rem">
+                      修改
+                    </b-button>
+                  </template>
+                </b-table>
+              </mdb-scrollbar>
+            </div>
+
+            <div v-show="!subTitleOK">
+              <h4 class="h4-responsive">
+                未生成字幕或视频处理中，暂时无法查看。
+              </h4>
+            </div>
 
             <b-modal size="md" :id="titleModal.id" :title="titleModal.title">
               <form>
@@ -92,6 +100,7 @@ export default {
   },
   data() {
     return {
+      subTitleOK: false,
       player: null,
       videoOptions: {
         language: 'zh-Hans-CN',
@@ -202,30 +211,37 @@ export default {
         label: '时间',
       })
       this.tlTableFields.push({
-        key: 'text',
-        label: '字幕文本'
-      })
-      this.tlTableFields.push({
         key: 'operation',
         label: '操作'
       })
+      this.tlTableFields.push({
+        key: 'text',
+        label: '字幕文本'
+      })
+
       let fieldData = null
 
       this.axios.get('/api/subtitle/query?video_id=' + this.$route.query.id, {headers: {Authorization: "Bearer " + this.$cookies.get('access_token')}})
           .then((response) => {
             console.log(response.data)
-            fieldData = response.data.data.subs
             let temp = []
-            fieldData.forEach((element, index) => {
-              temp.push({
-                msBegin: element.begin,
-                begin: _this.formatTime(element.begin),
-                text: element.text,
-                id: element.id
+            if(response.data.code === -1){
+              _this.subTitleOK = false
+            }else{
+              _this.subTitleOK = true
+              fieldData = response.data.data.subs
+              fieldData.forEach((element, index) => {
+                temp.push({
+                  msBegin: element.begin,
+                  begin: _this.formatTime(element.begin),
+                  text: element.text,
+                  id: element.id
+                })
               })
-            })
-            console.log(temp)
-            this.tlTableItems = temp
+              console.log(temp)
+              this.tlTableItems = temp
+            }
+
           })
           .catch((error) => {
             console.log(error)
@@ -353,5 +369,10 @@ export default {
   line-height: 25px;
   min-height: 25px;
   height: 25px;
+}
+
+.rowSameHeight {
+  white-space: nowrap;
+
 }
 </style>
