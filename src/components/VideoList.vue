@@ -1,7 +1,7 @@
 <template>
   <section id="tables">
-    <mdb-row>
-      <mdb-col md="12">
+    <mdb-row class="justify-content-md-center">
+      <mdb-col md="10">
         <mdb-card cascade narrow class="mt-5">
           <mdb-view class="gradient-card-header blue darken-2">
             <h4 class="h4-responsive text-white">视频列表</h4>
@@ -11,21 +11,6 @@
             <p>点击视频，进入视频与字幕的预览界面。</p>
             <table id="table" data-pagination="false"  data-show-footer="false">
             </table>
-
-            <!--
-            <mdb-tbl>
-              <mdb-scrollbar height="50vh" id="sc">
-                <b-table hover :responsive="true" :fields="videoTableFields" :items="videoTableItems">
-                  <template v-slot:cell(operation)="row" >
-                    <b-button variant="info" size="sm" @click="jumpToVideo(row.item, row.index, $event.target)">
-                      详情
-                    </b-button>
-                  </template>
-                </b-table>
-              </mdb-scrollbar>
-            </mdb-tbl>
-            -->
-
           </mdb-card-body>
         </mdb-card>
       </mdb-col>

@@ -269,10 +269,11 @@ export default {
                 XCosSecurityToken: response.data.data.sessionToken,
                 ExpiredTime: response.data.data.expiredTime
               })
+              let time = new Date().getTime()
               cos.putObject({
                 Bucket: 'sudotitle-1251910132', /* 必须 */
                 Region: 'ap-chengdu',     /* 存储桶所在地域，必须字段 */
-                Key: 'raw/' + _this.titleModal.index + "_" + new Date().getTime() + "_" + _this.titleModal.filename,              /* 必须 */
+                Key: 'raw/' + _this.titleModal.index + "_" + time + "_" + _this.titleModal.filename,              /* 必须 */
                 StorageClass: 'STANDARD',
                 Body: _this.titleModal.file, // 上传文件对象
                 onProgress: function (progressData) {
@@ -284,7 +285,7 @@ export default {
                     .put("/api/subtitle/modify", {
                       "id":  _this.titleModal.index,
                       "text":  _this.titleModal.subTitle,
-                      "filename": _this.titleModal.index + "_" + new Date().getTime() + "_" + _this.titleModal.filename
+                      "filename": _this.titleModal.index + "_" + time + "_" + _this.titleModal.filename
                     }, {headers: {Authorization: "Bearer " + _this.$cookies.get('access_token')}})
                     .then((response) => {
                       console.log(response.data)
@@ -292,7 +293,14 @@ export default {
                     .catch((error) => {
                       console.log(error)
                     })
+                _this.axios.get('/api/video/mixAudio/?id=' + _this.$route.query.id, {headers: {Authorization: "Bearer " + _this.$cookies.get('access_token')}})
+                    .then((response) => {
+                      console.log(response.data)
 
+                      })
+                    .catch((error) => {
+                      console.log(error)
+                    });
               });
             })
             .catch((error) => {
@@ -317,7 +325,7 @@ export default {
       // FileReader对象，h5提供的异步api，可以读取文件中的数据。
       const reader = new FileReader()
       // readAsText是个异步操作，只有等到onload时才能显示数据。
-      reader.readAsBinaryString(selectedFile)
+      reader.readAsArrayBuffer(selectedFile)
       reader.onload = function () {
         //当读取完成后回调这个函数,然后此时文件的内容存储到了result中,直接操作即可
         _this.titleModal.file = this.result

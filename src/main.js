@@ -29,13 +29,6 @@ import 'bootstrap-table/dist/bootstrap-table.min.css'
 import 'bootstrap-table/dist/bootstrap-table.min.js'
 import 'bootstrap-table/dist/locale/bootstrap-table-zh-CN.min.js'
 
-
-import Recorder from 'recorder-core'
-Vue.use(Recorder)
-//需要使用到的音频格式编码引擎的js文件统统加载进来
-import 'recorder-core/src/engine/mp3'
-import 'recorder-core/src/engine/mp3-engine'
-
 Vue.config.productionTip = false
 
 new Vue({

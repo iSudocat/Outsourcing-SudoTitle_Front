@@ -4,7 +4,7 @@ import Audit from '@/components/Audit'
 import VideoList from '@/components/VideoList'
 import videoPlay from '@/components/VideoPlay'
 import BadGateway from '@/components/BadGateway'
-import Login from "@/components/Login";
+import Login from "@/components/Login"
 
 Vue.use(Router);
 
