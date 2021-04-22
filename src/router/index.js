@@ -42,6 +42,11 @@ export default new Router({
       component: BadGateway
     },
     {
+      path: '/',
+      props: { page: 5 },
+      redirect: '/Login'
+    },
+    {
       path: '*',
       props: { page: 5 },
       redirect: '/404'

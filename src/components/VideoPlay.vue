@@ -275,7 +275,6 @@ export default {
       if (_this.titleModal.subTitle === '') {
         alert("请填写修改内容！")
       } else {
-
         this.axios.get('/api/subtitle/credential', {headers: {Authorization: "Bearer " + this.$cookies.get('access_token')}})
             .then((response) => {
               console.log(response.data)
@@ -312,7 +311,7 @@ export default {
                 _this.axios.get('/api/video/mixAudio/?id=' + _this.$route.query.id, {headers: {Authorization: "Bearer " + _this.$cookies.get('access_token')}})
                     .then((response) => {
                       console.log(response.data)
-
+                        alert("字幕修改请求已成功提交，请稍后查看！")
                       })
                     .catch((error) => {
                       console.log(error)

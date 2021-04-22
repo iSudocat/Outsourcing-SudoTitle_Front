@@ -18,8 +18,7 @@
                   <b-form-input id="date2" type="date" v-model="endTime" @change="dateUpdate"></b-form-input>
                 </mdb-col>
               </mdb-row>
-              <table style="margin-top: 30px" id="table" data-pagination="true" data-page-list="[5, 10, 20, all]"
-                     data-show-footer="false" data-page-size="5" data-show-export="true">
+              <table style="margin-top: 30px" id="table" data-show-export="true">
               </table>
             </mdb-card-body>
           </mdb-card>
@@ -79,7 +78,7 @@ export default {
         const $table = $('#table')
         this.axios.post('/api/record/querybytime', {
           start_time: this.startTime + " 00:00:00",
-          end_time: this.endTime + " 00:00:00"
+          end_time: this.endTime + " 23:59:59"
         }, {headers: {Authorization: "Bearer " + this.$cookies.get('access_token')}})
             .then((response) => {
               console.log(response.data)

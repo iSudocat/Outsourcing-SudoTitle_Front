@@ -148,7 +148,17 @@ export default {
       },
       'click .dl': function (e, value, row, index) {
         console.log($table.bootstrapTable('getData'))
-        _this.funDownload(JSON.stringify($table.bootstrapTable('getData')),row.id + ".json")
+
+        _this.axios.get('/api/subtitle/query?video_id=' + row.id, {headers: {Authorization: "Bearer " + _this.$cookies.get('access_token')}})
+            .then((response) => {
+              console.log(response.data)
+
+              _this.funDownload(JSON.stringify(response.data.data),row.id + ".json")
+
+            })
+            .catch((error) => {
+              console.log(error)
+            });
 
       },
     }
@@ -194,7 +204,7 @@ export default {
         case 1:
           return "字幕生成中，请稍后"
         case 2:
-          return "字幕已修改，正在合成，请稍后"
+          return "字幕已修改，正在合成，请稍候"
         case 3:
           return "字幕已生成，可预览视频"
       }
